@@ -34,14 +34,16 @@ if [[ -f "/mnt/c/Users/donal/wsl/WSLHostPatcher.exe" ]]; then
     /mnt/c/Users/donal/wsl/WSLHostPatcher.exe
 fi
 
+# wsl zsh same directory
+if [[ $OSTYPE == 'linux-gnu'* ]]; then
+    current_path() {
+        printf "\e]9;9;%s\e\\" "$(wslpath -w "$(pwd)")"
+    }
+    precmd_functions+=(current_path)
+fi
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-# rbenv
-eval "$(rbenv init - zsh)"
-
-# fnm
-eval "$(fnm env --use-on-cd)"
 
 # pnpm
 if [[ $OSTYPE == 'darwin'* ]]; then
@@ -57,7 +59,14 @@ if [[ $OSTYPE == 'linux-gnu'* ]]; then
     esac
 fi
 
+# rbenv
+eval "$(rbenv init - zsh)"
+
+# fnm
+eval "$(fnm env --use-on-cd)"
+
+# atuin
+eval "$(atuin init zsh)"
+
 # Fig post block. Keep at the bottom of this file.
 [[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
-
-eval "$(atuin init zsh)"

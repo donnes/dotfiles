@@ -29,11 +29,6 @@ plugins=(git)
 fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
 source $ZSH/oh-my-zsh.sh
 
-# WSL Host Patcher
-if [[ -f "/mnt/c/Users/donal/wsl/WSLHostPatcher.exe" ]]; then
-    /mnt/c/Users/donal/wsl/WSLHostPatcher.exe
-fi
-
 # wsl zsh same directory
 if [[ $OSTYPE == 'linux-gnu'* ]]; then
     current_path() {
@@ -63,7 +58,9 @@ fi
 eval "$(rbenv init - zsh)"
 
 # fnm
-eval "$(fnm env --use-on-cd)"
+if [[ -d "$HOME/.fnm" ]]; then
+    eval "$(fnm env --use-on-cd)"
+fi
 
 # atuin
 eval "$(atuin init zsh)"
